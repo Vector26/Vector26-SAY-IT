@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Say-It</string>
+    <string name="BASE_URL">http://crikx.pythonanywhere.com/</string>
+    <string-array name="theme_array">
+        <item>Material-Light</item>
+        <item>mytheme</item>
+    </string-array>
+</resources>
