@@ -28,22 +28,36 @@ public class RequestHandler implements requestHandlerCallback{
     JSONArray data;
     Context context;
     SharedPreferences sharedPreferences;
-
+    JSONObject data2;
     @Override
     public void callback(JSONArray response) {
         Log.i("response",response.toString());
     }
+    @Override
+    public void callback(JSONObject response) {Log.i("Response",response.toString());}
 
-    public RequestHandler(Boolean many,String url, int method, @Nullable JSONArray data, Context context, SharedPreferences shared) {
+    @Override
+    public void callbackError(VolleyError e) {
+        e.getStackTrace();
+    }
+
+    public RequestHandler(Boolean many, String url, int method, @Nullable JSONArray data, Context context, SharedPreferences shared) {
         this.url = url;
         Method = method;
         this.data = data;
         this.context = context;
         this.sharedPreferences=shared;
+        data2=new JSONObject();
         RequestQueue queue = Volley.newRequestQueue(this.context);
         if(!many){
         try{
-            JsonObjectRequest req = new JsonObjectRequest(this.Method,this.url, (JSONObject) this.data.get(0),
+            if(data==null){
+                data2=null;
+            }
+            else{
+                data2=(JSONObject) this.data.get(0);
+            }
+            JsonObjectRequest req = new JsonObjectRequest(this.Method,this.url, data2,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -53,6 +67,7 @@ public class RequestHandler implements requestHandlerCallback{
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     error.getStackTrace();
+                    callbackError(error);
                 }
             }){
                 @Override
@@ -111,8 +126,4 @@ public class RequestHandler implements requestHandlerCallback{
         }
     }
 
-    @Override
-    public void callback(JSONObject response) {
-        Log.i("Response",response.toString());
-    }
 }

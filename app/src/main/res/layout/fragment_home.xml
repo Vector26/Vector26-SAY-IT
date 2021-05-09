@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/FeedGUI"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/recyclerBG"
+                tools:itemCount="10"
+                tools:listitem="@layout/feed">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar"-->
+<!--            style="?android:attr/progressBarStyle"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:translationX="170dp"-->
+<!--            android:background="@color/secondary"-->
+<!--            android:progress="50"-->
+<!--            android:max="100"-->
+<!--            tools:progress="70"-->
+<!--            android:indeterminateDrawable="@drawable/progress_drawable"-->
+<!--            android:translationY="300dp" />-->
+
+    </RelativeLayout>
+
+</FrameLayout>

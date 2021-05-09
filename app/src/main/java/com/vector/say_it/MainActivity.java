@@ -1,12 +1,15 @@
 package com.vector.say_it;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.AuthFailureError;
@@ -35,44 +38,47 @@ public class MainActivity extends AppCompatActivity {
 
     EditText username,password;
     public String url;
+    FragmentTransaction transaction;
     SharedPreferences sharedPreferences;
+    Button signup;
+    int counter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        signup=findViewById(R.id.signup);
+        counter=0;
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(counter%2==0){
+                    signup.setText("LOGIN");
+                    openFragment(new signup());
+                    counter++;
+                }
+                else{
+                    signup.setText("SIGNIN");
+                    openFragment(new Login());
+                    counter++;
+                }
+            }
+        });
         sharedPreferences = getSharedPreferences("com.vector.say_it", MODE_PRIVATE);
-        url = getString(R.string.BASE_URL)+"/api-token-auth/";
+        url = getString(R.string.BASE_URL)+"api-token-auth/";
+        openFragment(new Login());
     }
+
+
+    public void openFragment(Fragment fragment) {
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.AuthFrame, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     @Override
     public void onBackPressed() {
-        finish();
         super.onBackPressed();
-    }
-    public void Login(View v) {
-        username = findViewById(R.id.login_username);
-        password = findViewById(R.id.login_password);
-        String user_text = username.getText().toString();
-        String pass_text = password.getText().toString();
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("username", user_text);
-            params.put("password", pass_text);
-            RequestHandler req=new RequestHandler(false,url,Request.Method.POST,new JSONArray().put(new JSONObject(params)),this,sharedPreferences){
-
-                @Override
-                public void callback(JSONObject response) {
-                    String t;
-                    try{
-                        t = response.getString("token");
-                        Log.i("Response", t);
-                        sharedPreferences.edit().putString("Auth-Token",t).apply();
-                        Intent i = new Intent(MainActivity.this, MainActivity0.class);
-                        MainActivity.this.startActivity(i);
-                        finish();
-                    }
-                    catch (Exception e){
-                        e.getStackTrace();
-                    }
-                }
-            };
+        finish();
     }
 }

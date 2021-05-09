@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="posts">Posts</string>
+    <string name="followed">Followed</string>
+    <string name="followers">Followers</string>
+</resources>

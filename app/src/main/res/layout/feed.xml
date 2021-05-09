@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Card"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="20dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#CE2196F3"
+        android:background="#FFFFFF"
         android:minHeight="100dp"
         android:orientation="vertical"
         android:paddingHorizontal="10dp"
@@ -34,28 +32,75 @@
             <TextView
                 android:id="@+id/username"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:text="username" />
+                android:gravity="center_vertical"
+                android:text="username"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/Content"
+            android:id="@+id/bio"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:padding="15dp"
-            android:text="dljfjbndjlfbdjbfjdfbjkdbfkdjbfskjdbfkdjsbfkjsdbfkjdsbfkjdsbfkjdsbkfbdskjfbdksjfbkdsbfkdsbfkjdsbkjfbdskfbdksjfbkdjsfbdksjfbdksjfbkdjsfbkjdsbfkdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjsdb" />
+            android:padding="25dp"
+            android:text="dljfjbndjlfbdjbfjdfbjkdbfkdjbfskjdbfkdjsbfkjsdbfkjdsbfkjdsbfkjdsbkfbdskjfbdksjfbkdsbfkdsbfkjdsbkjfbdskfbdksjfbkdjsfbdksjfbdksjfbkdjsfbkjdsbfkdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjsdb"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp">
+
+            <Button
+                android:id="@+id/Like"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="0"
+                android:background="@drawable/ic_heartdislike"
+                android:backgroundTintMode="src_atop"
+                android:hapticFeedbackEnabled="false"
+                android:theme="@style/ButtonStyle" />
+
+            <TextView
+                android:id="@+id/likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="0"
+                android:text="45" />
+
+            <Button
+                android:id="@+id/Comment"
+                android:layout_width="30dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0"
+                android:background="@drawable/ic_comment" />
+
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0"
+                android:text="45" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:paddingLeft="15dp"
             android:text="15/3/2021 7:03 PM IST"
-            android:textColor="#75050505" />
+            android:textColor="#75050505"
+            android:textSize="10dp" />
 
     </LinearLayout>
 

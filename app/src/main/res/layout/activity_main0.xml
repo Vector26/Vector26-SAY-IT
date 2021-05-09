@@ -6,16 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity0">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/FeedGUI"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:itemCount="10"
-        tools:listitem="@layout/feed" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/fragmentGround"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navigator"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="15"
+            android:background="#FFFFFF"
+            app:itemRippleColor="@color/black"
+            app:itemTextColor="@color/black"
+            app:menu="@menu/bottom_menu" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
