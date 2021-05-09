@@ -97,8 +97,8 @@ public class ProfileFragment extends Fragment {
     }
     public void refresh() {
         if(id>-1){
-            savePoints[0]="GuestProfile";
-            savePoints[1]="GuestProfilePosts";
+            savePoints[0]="GuestProfile"+id;
+            savePoints[1]="GuestProfilePosts"+id;
             url=getString(R.string.BASE_URL)+"/CMS-API";
             url=url+"?id="+id;
         }
@@ -135,14 +135,15 @@ public class ProfileFragment extends Fragment {
         try {
             if(id>-1){
                 Log.i("Msg","Exists and id");
-                data2=new JSONObject(sharedPreferences.getString("GuestProfile", ""));
-                data=new JSONArray(sharedPreferences.getString("GuestProfilePosts", ""));
+                data2=new JSONObject(sharedPreferences.getString("GuestProfile"+id, ""));
+                data=new JSONArray(sharedPreferences.getString("GuestProfilePosts"+id, ""));
             }
             else{
                 Log.i("Msg","Exists and n0t id");
                 data2=new JSONObject(sharedPreferences.getString("Profile", ""));
                 data=new JSONArray(sharedPreferences.getString("ProfilePosts", ""));
             }
+            linearLayout.setVisibility(View.GONE);
         }
         catch (Exception e){ e.getStackTrace();data=new JSONArray();}
         finally {
@@ -248,7 +249,7 @@ public class ProfileFragment extends Fragment {
         if(getActivity().getIntent().getStringExtra("id")!=null){
             id=Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
             Log.i("id",id+"");
-            if(sharedPreferences.getString("GuestProfilePosts", "").length()>=1){
+            if(sharedPreferences.getString("GuestProfilePosts"+id, "").length()>=1){
                 Log.i("Msg","Exists and id");
                 restore();
             }

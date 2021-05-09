@@ -35,12 +35,10 @@ public class MainActivity2 extends AppCompatActivity {
 //            }
 //        });
         if(getIntent().getStringExtra("post_id")!=null){
-            single_post single_Post=new single_post();
-            openFragment(single_Post);
+            openFragment(new single_post().newInstance("",""));
         }
         else{
-        ProfileFragment pf=new ProfileFragment();
-        openFragment(pf);
+        openFragment(new ProfileFragment().newInstance("",""));
         }
         back=findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -62,8 +60,8 @@ public class MainActivity2 extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        sharedPreferences.edit().putString("GuestProfile", "").apply();
-        sharedPreferences.edit().putString("GuestProfilePosts", "").apply();
+        sharedPreferences.edit().putString("GuestProfile"+getIntent().getStringExtra("id"), "").apply();
+        sharedPreferences.edit().putString("GuestProfilePosts"+getIntent().getStringExtra("id"), "").apply();
         finish();
     }
 }

@@ -45,6 +45,7 @@ public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolde
     public void onBindViewHolder(@NonNull commentsVeiw.objViewHolder holder, int position) {
         try {
             holder.id = (int) Feed.getJSONObject(position).getInt("id");
+            holder.profile_id = (int) Feed.getJSONObject(position).getJSONObject("commenter").getJSONObject("user").getInt("id");
             holder.isOwned=Feed.getJSONObject(position).getInt("isOwned");
 //            holder.User.setText("id->>"+holder.id+"  "+holder.post_id+"<<-post_id");
             holder.User.setText(Feed.getJSONObject(position).getJSONObject("commenter").getJSONObject("user").getString("username"));
@@ -78,7 +79,7 @@ public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolde
         public TextView User,comment;
         int isOwned;
         public ImageView profile;
-        public int id;
+        public int id,profile_id;
         public Button Delete;
         public objViewHolder(@NonNull View itemView,Context context) {
             super(itemView);
@@ -108,7 +109,7 @@ public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolde
         public void getProfile(Context context){
             Intent i = new Intent(context, MainActivity2.class);
 //              Log.i("MyLogs",NotesList.size()+"");
-            i.putExtra("id", id+"");
+            i.putExtra("id", profile_id+"");
             context.startActivity(i);
         }
 
