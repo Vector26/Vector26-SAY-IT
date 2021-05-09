@@ -25,7 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class feedVeiw extends RecyclerView.Adapter<feedVeiw.objViewHolder> {
+public class    feedVeiw extends RecyclerView.Adapter<feedVeiw.objViewHolder> {
         JSONArray Feed;
         Context context;
         SharedPreferences sharedPreferences;
@@ -153,9 +153,11 @@ public class feedVeiw extends RecyclerView.Adapter<feedVeiw.objViewHolder> {
 //                    Log.i("S",s+"");
 //                    likes.setText(s+"");
                     try{
+
+                        Log.i("Action","Actually Liked");
                         s=response.getJSONObject("Data").getJSONObject("post").getInt("likes");
                         likes.setText(s+"");
-                        //                        Log.i("Action","Actually Liked");
+                                                Log.i("Action","Actually Liked");
                         if(response.getString("Message").toString().equals("Liked")){
                             js=feed.getJSONObject(pos);
                             js.put("likes", s);

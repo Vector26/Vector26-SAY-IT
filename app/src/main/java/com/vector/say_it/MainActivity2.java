@@ -16,6 +16,7 @@ public class MainActivity2 extends AppCompatActivity {
     public FragmentTransaction transaction;
     SharedPreferences sharedPreferences;
     Button back;
+    Button follow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,14 @@ public class MainActivity2 extends AppCompatActivity {
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.guest_profile_action_bar);
         sharedPreferences = getSharedPreferences("com.vector.say_it", Context.MODE_PRIVATE);
+//        follow=findViewById(R.id.followButton);
+//        follow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ProfileFragment pf=new ProfileFragment();
+//                openFragment(pf);
+//            }
+//        });
         if(getIntent().getStringExtra("post_id")!=null){
             single_post single_Post=new single_post();
             openFragment(single_Post);

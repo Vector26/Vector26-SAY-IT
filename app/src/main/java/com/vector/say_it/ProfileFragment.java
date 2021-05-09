@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,13 +16,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,11 +46,11 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     View v;
-    int id;
-    String uri;
+    int id,follow_status;
     SharedPreferences sharedPreferences;
     RecyclerView recyclerView;
-    public String url;
+    public String url,uri,follow_req;
+    public FragmentTransaction transaction;
     static JSONArray data;
     JSONObject data2;
     RecyclerView.LayoutManager layoutManager;
@@ -82,17 +89,19 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         sharedPreferences = getActivity().getSharedPreferences("com.vector.say_it", Context.MODE_PRIVATE);
-        url=getString(R.string.BASE_URL)+"/CMS-API";
+//        url=getString(R.string.BASE_URL)+"/CMS-API";
     }
     public void refresh() {
         if(id>-1){
             savePoints[0]="GuestProfile";
             savePoints[1]="GuestProfilePosts";
+            url=getString(R.string.BASE_URL)+"/CMS-API";
             url=url+"?id="+id;
         }
         else{
             savePoints[0]="Profile";
             savePoints[1]="ProfilePosts";
+            url=getString(R.string.BASE_URL)+"/CMS-API";
         }
         Log.i("Msg","url->>"+url);
         RequestHandler req = new RequestHandler(false, url, Request.Method.GET, null, getActivity(), sharedPreferences) {
@@ -131,16 +140,22 @@ public class ProfileFragment extends Fragment {
         }
         catch (Exception e){ e.getStackTrace();data=new JSONArray();}
         finally {
-            Log.i("Msg","data->"+data.toString());
+            Log.i("Msgrestorre","data->"+data.toString());
             Log.i("Msg","data2->"+data2.toString());
             setDataVALUES();
             if(data.length()>0){
                 v.findViewById(R.id.NoPostL).setVisibility(View.GONE);
             }
+            else{
+                v.findViewById(R.id.NoPostL).setVisibility(View.VISIBLE);
+            }
+
             FeedView.setFeed(data);
             FeedView.notifyDataSetChanged();
+//            onDestroy();
         }
     }
+
     public void setDataVALUES(){
         try{
             Log.i("Orig",data2.toString());
@@ -148,6 +163,7 @@ public class ProfileFragment extends Fragment {
             username.setText(data2.getJSONObject("Profile").getJSONObject("user").getString("username"));
             userHeader.setText("@"+username.getText().toString());
             email.setText(data2.getJSONObject("Profile").getJSONObject("user").getString("email"));
+            Log.i("Orignal",data2.toString());
             first_name.setText(data2.getJSONObject("Profile").getJSONObject("user").getString("first_name")+" "+data2.getJSONObject("Profile").getJSONObject("user").getString("last_name"));
             followers_count.setText(data2.getJSONObject("Profile").getString("FRC"));
             Followed_count.setText(data2.getJSONObject("Profile").getString("FDC"));
@@ -172,14 +188,15 @@ public class ProfileFragment extends Fragment {
     public void isItselfforFollow(){
         try{
             JSONArray temp=data2.getJSONArray("Posts");
-            Log.i("msg=","This worked");
             if(data2.getInt("isItself")==1){
+            Log.i("msg=","This worked");
                 Log.i("isItself",data2.getInt("isItself")+"");
                 follow.setVisibility(View.GONE);
+                follow_status=0;
             }
-            else{
-                //            FollowAPI
-            }
+            follow.setText("Unfollow");
+            follow.setTextColor(getResources().getColor(R.color.black));
+            follow.setBackground(getResources().getDrawable(R.drawable.text_fields_shape2));
         }
         catch (JSONException e) {
             try {
@@ -191,6 +208,7 @@ public class ProfileFragment extends Fragment {
                 follow.setText("Follow");
                 follow.setTextColor(getResources().getColor(R.color.white));
                 follow.setBackground(getResources().getDrawable(R.drawable.button_shape));
+                follow_status=1;
                 }
             }
             catch (JSONException t){}
@@ -200,6 +218,7 @@ public class ProfileFragment extends Fragment {
     public void init(){
         data=new JSONArray();
         id=-1;
+        follow_req=getString(R.string.BASE_URL)+"CMS-API/follow";
         follow=v.findViewById(R.id.followButton);
         savePoints=new String[2];
         data2=new JSONObject();
@@ -238,6 +257,56 @@ public class ProfileFragment extends Fragment {
             Log.i("Msg","n0t Exists and n0t id");
             refresh();}
         }
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onFollow();
+                YoYo.with(Techniques.FadeIn)
+                        .duration(500)
+                        .playOn(v);
+            }
+        });
+    }
+
+    public void onFollow(){
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("id",id+"");
+            RequestHandler req=new RequestHandler(false,follow_req, Request.Method.POST,new JSONArray().put(new JSONObject(params)),getActivity(),sharedPreferences){
+
+                @Override
+                public void callback(JSONObject response) {
+                    String t;
+                    try{
+                        t = response.getString("Message");
+                        if(t.equals("Followed")){
+
+//                            refresh();
+                        }
+                        else if(t.equals("Unfollowed")){
+
+//                            refresh();
+                        }
+                        Log.i("Response", t);
+                    }
+                    catch (JSONException e){
+                        Toast.makeText(getActivity(),"Unable to Follow",Toast.LENGTH_SHORT);
+//                        refresh();
+                        Log.i("MSG","unfollowed");
+                        e.getStackTrace();
+                    }
+                    finally {
+                        sharedPreferences.edit().putString(savePoints[0], "").apply();
+                        sharedPreferences.edit().putString(savePoints[1], "").apply();
+                        refresh();
+                    }
+                }
+                @Override
+                public void callbackError(VolleyError e) {
+                    super.callbackError(e);
+                    Toast.makeText(getActivity(),"Unable to Follow",Toast.LENGTH_SHORT);
+                }
+            };
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
