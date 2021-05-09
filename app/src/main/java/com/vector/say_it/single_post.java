@@ -1,6 +1,7 @@
 package com.vector.say_it;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -13,11 +14,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -25,6 +30,8 @@ import com.daimajia.androidanimations.library.YoYo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,14 +45,17 @@ public class single_post extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     View v;
-    TextView username,content,likes,comments,date;
+    TextView username,content,likes,comments,date,userHeader;
+    EditText user_comment;
     ImageView profile_pic;
     String url,uri;
+    LinearLayout linearLayout;
+    ProgressBar progressBar;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     commentsVeiw comments_veiw;
     JSONArray commentArray;
-    Button like,comment;
+    Button like,comment,post_comment;
     public int id,post_id,isLiked;
     SharedPreferences sharedPreferences;
     // TODO: Rename and change types of parameters
@@ -84,10 +94,12 @@ public class single_post extends Fragment {
     }
 
     public void refreshpost(){
+        linearLayout.setVisibility(View.VISIBLE);
         url=getString(R.string.BASE_URL)+"CMS-API/Feed?id="+post_id;
         RequestHandler req=new RequestHandler(false,url, Request.Method.GET,null,getActivity(),sharedPreferences){
             @Override
             public void callback(JSONObject response) {
+                linearLayout.setVisibility(View.GONE);
                 try {
                     post_id = (int) response.getInt("id");
                     likes.setText(response.getInt("likes")+"");
@@ -135,8 +147,13 @@ public class single_post extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("com.vector.say_it", Context.MODE_PRIVATE);
         post_id=Integer.parseInt(getActivity().getIntent().getStringExtra("post_id"));
         username=v.findViewById(R.id.username);
+        user_comment=v.findViewById(R.id.CommentET);
+        progressBar=v.findViewById(R.id.progressBar);
+        linearLayout=v.findViewById(R.id.waiter);
+        progressBar.isIndeterminate();
         content=v.findViewById(R.id.bio);
         likes=v.findViewById(R.id.likes);
+        post_comment=v.findViewById(R.id.post_comment);
         comments=v.findViewById(R.id.comments);
         profile_pic=v.findViewById(R.id.profile_pic);
         date=v.findViewById(R.id.email);
@@ -145,12 +162,88 @@ public class single_post extends Fragment {
         recyclerView= v.findViewById(R.id.commentList);
         layoutManager = new LinearLayoutManager(getActivity());
         commentArray=new JSONArray();
-        comments_veiw=new commentsVeiw(commentArray,getActivity());
+        comments_veiw=new commentsVeiw(commentArray,getActivity(),this);
         recyclerView.setLayoutManager(layoutManager);
+        userHeader=getActivity().findViewById(R.id.GuestUserId);
         recyclerView.setAdapter(comments_veiw);
+        userHeader.setText("Post");
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getProfile(getActivity());
+            }
+        });
+        profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getProfile(getActivity());
+            }
+        });
+        post_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onComment();
+            }
+        });
+
         refreshpost();
     }
 
+    public void onComment(){
+        String commenturi="";
+        if(user_comment.getText().toString().isEmpty()){
+            Log.i("Msg","Its empty");
+        }
+        else{
+            commenturi=getString(R.string.BASE_URL)+"CMS-API/Feed/comment";
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("post_id",post_id+"");
+            params.put("comment",user_comment.getText().toString());
+            RequestHandler req=new RequestHandler(false,commenturi, Request.Method.POST,new JSONArray().put(new JSONObject(params)),getActivity(),sharedPreferences){
+                @Override
+                public void callback(JSONObject response) {
+                    try{likes.setText(response.getJSONObject("Data").getJSONObject("post").getInt("likes")+"");
+                    comments.setText(response.getJSONObject("Data").getJSONObject("post").getJSONArray("comments").length()+"");
+                    comments_veiw.setFeed(response.getJSONObject("Data").getJSONObject("post").getJSONArray("comments"));
+                    comments_veiw.notifyDataSetChanged();
+                    user_comment.setText("");
+                        Log.i("Msg","No Oops");
+                    }
+                    catch (JSONException e){
+                        Log.i("Msg","Oops");
+                    }
+                }
+            };
+        }
+    }
+
+    public void deleteComment(int id){
+        String commenturi="";
+        commenturi=getString(R.string.BASE_URL)+"CMS-API/Feed/comment?post_id="+post_id+"&id="+id;
+//        Log.i("Msg",params.toString());
+        RequestHandler req=new RequestHandler(false,commenturi, Request.Method.DELETE,null,getActivity(),sharedPreferences){
+            @Override
+            public void callbackError(VolleyError e) {
+                super.callbackError(e);
+                Log.i("PersonalError",e.networkResponse.data.toString());
+                Log.i("PersonalError",e.networkResponse.headers.toString());
+            }
+
+            @Override
+            public void callback(JSONObject response) {
+                try{likes.setText(response.getJSONObject("Data").getJSONObject("post").getInt("likes")+"");
+                    comments.setText(response.getJSONObject("Data").getJSONObject("post").getJSONArray("comments").length()+"");
+                    comments_veiw.setFeed(response.getJSONObject("Data").getJSONObject("post").getJSONArray("comments"));
+                    comments_veiw.notifyDataSetChanged();
+                    user_comment.setText("");
+                    Log.i("Msg","No Oops");
+                }
+                catch (JSONException e){
+                    Log.i("Msg","Oops");
+                }
+            }
+        };
+    }
 //    public void like(Context context,JSONObject js){
 //        Log.i("Liked","Liked");
 //        String url=context.getString(R.string.BASE_URL)+"/CMS-API/Feed/like";
@@ -201,6 +294,12 @@ public class single_post extends Fragment {
 //        };
 //    }
 
+    public void getProfile(Context context){
+        Intent i = new Intent(context, MainActivity2.class);
+//              Log.i("MyLogs",NotesList.size()+"");
+        i.putExtra("id", id+"");
+        context.startActivity(i);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

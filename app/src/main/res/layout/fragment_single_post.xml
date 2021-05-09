@@ -4,141 +4,165 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".single_post">
-    <LinearLayout
-        android:id="@+id/Card"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/Card"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:background="#FFFFFF"
-            android:minHeight="100dp"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="20dp">
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="#FFFFFF"
+                android:minHeight="100dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="20dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4">
+
+                    <ImageView
+                        android:id="@+id/profile_pic"
+                        android:layout_width="fill_parent"
+                        android:layout_height="30dp"
+                        android:layout_weight="4"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="username"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/bio"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:padding="25dp"
+                    android:text="dljfjbndjlfbdjbfjdfbjkdbfkdjbfskjdbfkdjsbfkjsdbfkjdsbfkjdsbfkjdsbkfbdskjfbdksjfbkdsbfkdsbfkjdsbkjfbdskfbdksjfbkdjsfbdksjfbdksjfbkdjsfbkjdsbfkdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjsdb"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp">
+
+                    <Button
+                        android:id="@+id/Like"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/ic_heartdislike"
+                        android:backgroundTintMode="src_atop"
+                        android:hapticFeedbackEnabled="false"
+                        android:theme="@style/ButtonStyle" />
+
+                    <TextView
+                        android:id="@+id/likes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="0"
+                        android:text="45" />
+
+                    <Button
+                        android:id="@+id/Comment"
+                        android:layout_width="30dp"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="0"
+                        android:background="@drawable/ic_comment" />
+
+                    <TextView
+                        android:id="@+id/comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="0"
+                        android:text="45" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:paddingLeft="15dp"
+                    android:text="15/3/2021 7:03 PM IST"
+                    android:textColor="#75050505"
+                    android:textSize="10dp" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentList"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                tools:listitem="@layout/comments" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="4">
-
-                <ImageView
-                    android:id="@+id/profile_pic"
-                    android:layout_width="fill_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="4"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="username"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/bio"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:padding="25dp"
-                android:text="dljfjbndjlfbdjbfjdfbjkdbfkdjbfskjdbfkdjsbfkjsdbfkjdsbfkjdsbfkjdsbkfbdskjfbdksjfbkdsbfkdsbfkjdsbkjfbdskfbdksjfbkdjsfbdksjfbdksjfbkdjsfbkjdsbfkdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjdsbfkjsdb"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="3"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp">
-
-                <Button
-                    android:id="@+id/Like"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="0"
-                    android:background="@drawable/ic_heartdislike"
-                    android:backgroundTintMode="src_atop"
-                    android:hapticFeedbackEnabled="false"
-                    android:theme="@style/ButtonStyle" />
-
-                <TextView
-                    android:id="@+id/likes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="0"
-                    android:text="45" />
-                <Button
-                    android:id="@+id/Comment"
-                    android:layout_width="30dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="0"
-                    android:background="@drawable/ic_comment" />
-
-                <TextView
-                    android:id="@+id/comments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="0"
-                    android:text="45" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:paddingLeft="15dp"
-                android:text="15/3/2021 7:03 PM IST"
-                android:textColor="#75050505"
-                android:textSize="10dp" />
+                android:layout_weight="0"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="7.5dp">
+
+                <EditText
+                    android:id="@+id/CommentET"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Comment"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/post_comment"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/ic_send" />
+            </LinearLayout>
 
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentList"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            tools:listitem="@layout/comments" />
 
         <LinearLayout
+            android:id="@+id/waiter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:orientation="horizontal"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="7.5dp">
+            android:layout_height="match_parent"
+            android:background="@color/loading_screen"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/CommentTV"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Comment"
-                android:inputType="textPersonName" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="35dp"
-                android:layout_height="30dp"
-                android:layout_weight="0"
-                android:background="@drawable/ic_send" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
+
 </FrameLayout>

@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="secondary">#0065B5</color>
     <color name="recyclerBG">#DDDDDD</color>
+    <color name="loading_screen">#DCDCDC</color>
     <color name="Alert">#DF0707</color>
 </resources>

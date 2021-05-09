@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,8 @@ public class ProfileFragment extends Fragment {
     int id,follow_status;
     SharedPreferences sharedPreferences;
     RecyclerView recyclerView;
+    LinearLayout linearLayout;
+    ProgressBar progressBar;
     public String url,uri,follow_req;
     public FragmentTransaction transaction;
     static JSONArray data;
@@ -104,10 +108,12 @@ public class ProfileFragment extends Fragment {
             url=getString(R.string.BASE_URL)+"/CMS-API";
         }
         Log.i("Msg","url->>"+url);
+        linearLayout.setVisibility(View.VISIBLE);
         RequestHandler req = new RequestHandler(false, url, Request.Method.GET, null, getActivity(), sharedPreferences) {
             @Override
             public void callback(JSONObject response) {
                 try {
+                    linearLayout.setVisibility(View.GONE);
                     data2=response;
                     Log.i("Msg","data2->>>"+data2.toString());
                     sharedPreferences.edit().putString(savePoints[0], data2.toString()).apply();
@@ -218,6 +224,9 @@ public class ProfileFragment extends Fragment {
     public void init(){
         data=new JSONArray();
         id=-1;
+        progressBar=v.findViewById(R.id.progressBar);
+        linearLayout=v.findViewById(R.id.waiter);
+        progressBar.isIndeterminate();
         follow_req=getString(R.string.BASE_URL)+"CMS-API/follow";
         follow=v.findViewById(R.id.followButton);
         savePoints=new String[2];
@@ -272,10 +281,12 @@ public class ProfileFragment extends Fragment {
     public void onFollow(){
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("id",id+"");
+            linearLayout.setVisibility(View.GONE);
             RequestHandler req=new RequestHandler(false,follow_req, Request.Method.POST,new JSONArray().put(new JSONObject(params)),getActivity(),sharedPreferences){
 
                 @Override
                 public void callback(JSONObject response) {
+                    linearLayout.setVisibility(View.VISIBLE);
                     String t;
                     try{
                         t = response.getString("Message");

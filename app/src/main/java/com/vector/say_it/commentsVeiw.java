@@ -2,6 +2,7 @@ package com.vector.say_it;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +15,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolder> {
         JSONArray Feed;
         Context context;
-        public commentsVeiw(JSONArray f, Context k){
+        single_post frag;
+        public commentsVeiw(JSONArray f, Context k,single_post t){
             this.Feed=f;
             this.context=k;
+            this.frag=t;
         }
 
     @NonNull
@@ -78,6 +85,12 @@ public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolde
             User=itemView.findViewById(R.id.comment_username);
             comment=itemView.findViewById(R.id.the_comment);
             Delete=itemView.findViewById(R.id.delete_comment);
+            Delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    frag.deleteComment(id);
+                }
+            });
             profile=itemView.findViewById(R.id.comment_profile_pic);
             profile.setOnClickListener(new View.OnClickListener() {
                 @Override
