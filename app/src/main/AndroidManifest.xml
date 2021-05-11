@@ -13,22 +13,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SayIt"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity2"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".MainActivity4"></activity>
+        <activity android:name=".create_event" />
         <activity
-            android:name=".MainActivity0"
+            android:name=".SubEvents"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Navigations"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SayIt"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Auth"
             android:screenOrientation="portrait"
             android:theme="@style/customTheme">
             <intent-filter>

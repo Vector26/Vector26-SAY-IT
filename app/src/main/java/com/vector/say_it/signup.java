@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -22,6 +23,8 @@ import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -82,16 +85,55 @@ public class signup extends Fragment {
         String Fname=f_name.getText().toString();
         String Lname=l_name.getText().toString();
         String emailString=email.getText().toString();
+        String[] em;
         String pass_text = password1.getText().toString();
         String pass_text2 = password2.getText().toString();
-        if(pass_text.equals(pass_text2)){
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", user_text);
-        params.put("first_name", Fname);
-        params.put("last_name", Lname);
-        params.put("email", emailString);
-        params.put("password", pass_text);
-        params.put("password2", pass_text2);
+        Boolean checks[]=new Boolean[4];
+        Boolean checks2[]={true,true,true,true};
+        if(!pass_text.equals(pass_text2)){
+            password2.setError("Passwords Do not Match");
+            checks[0]=false;
+        }
+        else{
+            checks[1]=true;
+        }
+        if(!(emailString.contains("@"))){
+            email.setError("Please enter a correct Email");
+            checks[1]=false;
+        }
+        else{
+            em=emailString.split("@");
+            if(!em[1].contains(".")){
+                email.setError("Please enter a correct Email");
+                checks[1]=false;}
+            else
+            checks[1]=true;
+        }
+        if(user_text.contains(" ")){
+            username.setError("Please enter a valid username , not containing any spaces");
+            checks[2]=false;
+        }
+        else{
+            checks[2]=true;
+        }
+        Log.i("Bool",pass_text.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")+"");
+        if(!(pass_text.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")) || pass_text.equals("")){
+            password1.setError("Please enter a strong password");
+            checks[3]=false;
+        }
+        else{
+            checks[3]=true;
+        }
+        Log.i("msg->",!Arrays.asList(checks).contains(false)+"");
+        if(!Arrays.asList(checks).contains(false)){
+            Log.i("msg->","Worked");
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("username", user_text);
+            params.put("first_name", Fname);
+            params.put("last_name", Lname);
+            params.put("email", emailString);
+            params.put("password", pass_text);
+            params.put("password2", pass_text2);
         RequestHandler req=new RequestHandler(false,url, Request.Method.POST,new JSONArray().put(new JSONObject(params)),getActivity(),sharedPreferences){
 
             @Override
@@ -100,14 +142,16 @@ public class signup extends Fragment {
                 try{
                     t = response.getString("username");
                     if(t.equals(user_text)){
-                        Alert.setText("Registerd, Please Log-in");
+//                        Alert.setText("Registerd, Please Log-in");
+                        Toast.makeText(getContext(),"Registerd,Log-In",Toast.LENGTH_LONG).show();
                         reset();
                     }
                     Log.i("Response", t);
                 }
                 catch (Exception e){
-                    Alert.setText("Coud not sign-up");
-                    Alert.setTextColor(v.getResources().getColor(R.color.Alert));
+//                    Alert.setText("Coud not sign-up");
+//                    Alert.setTextColor(v.getResources().getColor(R.color.Alert));
+                    Toast.makeText(getContext(),"Something went wrong",Toast.LENGTH_SHORT).show();
                     e.getStackTrace();
                     }
                 }
@@ -116,10 +160,6 @@ public class signup extends Fragment {
                 super.callbackError(e);
             }
         };
-        }
-        else{
-            Alert.setText("Passwords do not match");
-            Alert.setTextColor(v.getResources().getColor(R.color.Alert));
         }
     }
 

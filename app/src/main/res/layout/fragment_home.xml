@@ -10,36 +10,72 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/createFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|right"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:src="@drawable/ic_plus"
+            app:backgroundTint="@color/secondary" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|right"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/FeedGUI"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/recyclerBG"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/feed">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <!--        <ProgressBar-->
+        <!--            android:id="@+id/progressBar"-->
+        <!--            style="?android:attr/progressBarStyle"-->
+        <!--            android:layout_width="48dp"-->
+        <!--            android:layout_height="48dp"-->
+        <!--            android:translationX="170dp"-->
+        <!--            android:background="@color/secondary"-->
+        <!--            android:progress="50"-->
+        <!--            android:max="100"-->
+        <!--            tools:progress="70"-->
+        <!--            android:indeterminateDrawable="@drawable/progress_drawable"-->
+        <!--            android:translationY="300dp" />-->
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/waiter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/loading_screen"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/FeedGUI"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/recyclerBG"
-                tools:itemCount="10"
-                tools:listitem="@layout/feed">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progressBar"-->
-<!--            style="?android:attr/progressBarStyle"-->
-<!--            android:layout_width="48dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:translationX="170dp"-->
-<!--            android:background="@color/secondary"-->
-<!--            android:progress="50"-->
-<!--            android:max="100"-->
-<!--            tools:progress="70"-->
-<!--            android:indeterminateDrawable="@drawable/progress_drawable"-->
-<!--            android:translationY="300dp" />-->
 
     </RelativeLayout>
 

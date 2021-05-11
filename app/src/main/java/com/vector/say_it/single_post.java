@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
@@ -295,7 +294,7 @@ public class single_post extends Fragment {
 //    }
 
     public void getProfile(Context context){
-        Intent i = new Intent(context, MainActivity2.class);
+        Intent i = new Intent(context, SubEvents.class);
 //              Log.i("MyLogs",NotesList.size()+"");
         i.putExtra("id", id+"");
         context.startActivity(i);

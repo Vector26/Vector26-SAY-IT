@@ -8,16 +8,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="8dp"
         android:paddingVertical="8dp">
 
         <TextView
             android:id="@+id/GuestUserId"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="#FFFFFF"
             android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/profile_options"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="&#8942;"
+            android:textSize="30dp"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

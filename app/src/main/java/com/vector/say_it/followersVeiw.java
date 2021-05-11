@@ -18,37 +18,35 @@ import com.bumptech.glide.Glide;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolder> {
+public class followersVeiw extends RecyclerView.Adapter<followersVeiw.objViewHolder> {
         JSONArray Feed;
         Context context;
-        single_post frag;
-        public commentsVeiw(JSONArray f, Context k,single_post t){
+        int FS;
+        String[] FollowState;
+        public followersVeiw(JSONArray f, Context k, int FS){
             this.Feed=f;
             this.context=k;
-            this.frag=t;
+            this.FS=FS;
+            this.FollowState=new String[2];
+            this.FollowState[0]="Follower";
+            this.FollowState[1]="FollowedUser";
         }
 
     @NonNull
     @Override
-    public commentsVeiw.objViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.comments,parent,false);
+    public followersVeiw.objViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_card,parent,false);
         return new objViewHolder(view,context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull commentsVeiw.objViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull followersVeiw.objViewHolder holder, int position) {
         try {
-            holder.id = (int) Feed.getJSONObject(position).getInt("id");
-            holder.profile_id = (int) Feed.getJSONObject(position).getJSONObject("commenter").getJSONObject("user").getInt("id");
-            holder.isOwned=Feed.getJSONObject(position).getInt("isOwned");
-//            holder.User.setText("id->>"+holder.id+"  "+holder.post_id+"<<-post_id");
-            holder.User.setText(Feed.getJSONObject(position).getJSONObject("commenter").getJSONObject("user").getString("username"));
-            String uri=Feed.getJSONObject(position).getJSONObject("commenter").getString("image");
+            holder.id = (int) Feed.getJSONObject(position).getJSONObject(FollowState[FS]).getInt("id");
+            holder.profile_id = holder.id;
+            holder.User.setText(Feed.getJSONObject(position).getJSONObject(FollowState[FS]).getJSONObject("user").getString("username"));
+            String uri=context.getString(R.string.BASE_URL)+Feed.getJSONObject(position).getJSONObject(FollowState[FS]).getString("image").substring(1);
             Log.i("URI",uri);
-            holder.comment.setText(Feed.getJSONObject(position).getString("comment"));
-            if(holder.isOwned==0){
-                holder.Delete.setVisibility(View.GONE);
-            }
             Glide.with(context)
                     .load(uri)
                     .placeholder(R.drawable.default_pp_shape)
@@ -70,23 +68,19 @@ public class commentsVeiw extends RecyclerView.Adapter<commentsVeiw.objViewHolde
     }
 
     public class objViewHolder extends RecyclerView.ViewHolder{
-        public TextView User,comment;
-        int isOwned;
+        public TextView User;
         public ImageView profile;
         public int id,profile_id;
-        public Button Delete;
         public objViewHolder(@NonNull View itemView,Context context) {
             super(itemView);
-            User=itemView.findViewById(R.id.comment_username);
-            comment=itemView.findViewById(R.id.the_comment);
-            Delete=itemView.findViewById(R.id.delete_comment);
-            Delete.setOnClickListener(new View.OnClickListener() {
+            User=itemView.findViewById(R.id.username);
+            profile=itemView.findViewById(R.id.profile_pic);
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    frag.deleteComment(id);
+                    getProfile(context);
                 }
             });
-            profile=itemView.findViewById(R.id.comment_profile_pic);
             profile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

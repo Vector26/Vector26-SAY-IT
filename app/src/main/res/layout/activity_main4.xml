@@ -4,16 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubEvents">
+    tools:context=".MainActivity4">
 
     <FrameLayout
-        android:id="@+id/profileView"
+        android:id="@+id/frag_field"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

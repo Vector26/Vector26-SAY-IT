@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity2 extends AppCompatActivity {
+public class SubEvents extends AppCompatActivity {
 
     public FragmentTransaction transaction;
     SharedPreferences sharedPreferences;

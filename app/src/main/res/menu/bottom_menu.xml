@@ -12,11 +12,6 @@
         android:iconTint="@color/black"
         android:title="Search"/>
     <item
-        android:id="@+id/page_4"
-        android:enabled="true"
-        android:icon="@drawable/ic_icons8_plus"
-        android:title="Create"/>
-    <item
         android:id="@+id/page_3"
         android:enabled="true"
         android:icon="@drawable/ic_user"

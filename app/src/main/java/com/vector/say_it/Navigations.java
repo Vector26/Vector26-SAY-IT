@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,27 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
-public class MainActivity0 extends AppCompatActivity {
+public class Navigations extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     RecyclerView recyclerView;
@@ -59,7 +43,7 @@ public class MainActivity0 extends AppCompatActivity {
         arrayList=new Stack<>();
         action_bars= new int[]{R.layout.custom_action_bar,R.layout.search_action_bar,R.layout.profile_action_bar};
         if(sharedPreferences.getString("Auth-Token", "").length()<=1){
-            Intent i = new Intent(MainActivity0.this, MainActivity.class);
+            Intent i = new Intent(Navigations.this, Auth.class);
 //            Log.i("Auth-Token","->"+sharedPreferences.getString("Auth-Token", ""));
             this.startActivity(i);
             finish();
@@ -103,9 +87,6 @@ public class MainActivity0 extends AppCompatActivity {
                         openFragment(profileFragment);
                         arrayList.push(action_bars[2]);
                         Log.i("Fragment","profile cliked");
-                        return true;
-                    case R.id.page_4:
-                        Log.i("Fragment","create cliked");
                         return true;
                 }
                 return false;

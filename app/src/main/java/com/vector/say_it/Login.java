@@ -36,6 +36,7 @@ public class Login extends Fragment {
     public String url;
     SharedPreferences sharedPreferences;
     View v;
+    int flag;
     Button login;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,13 +74,16 @@ public class Login extends Fragment {
     }
 
     public void init(){
+        flag=0;
         sharedPreferences = getActivity().getSharedPreferences("com.vector.say_it", Context.MODE_PRIVATE);
         url = getString(R.string.BASE_URL)+"api-token-auth/";
         login=v.findViewById(R.id.login_button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Login(v);
+                if(flag==0){
+                    flag=1;
+                Login(v);}
             }
         });
     }
@@ -100,7 +104,7 @@ public class Login extends Fragment {
                     t = response.getString("token");
                     Log.i("Response", t);
                     sharedPreferences.edit().putString("Auth-Token",t).apply();
-                    Intent i = new Intent(getActivity(), MainActivity0.class);
+                    Intent i = new Intent(getActivity(), Navigations.class);
                     getActivity().startActivity(i);
                     getActivity().finish();
                 }

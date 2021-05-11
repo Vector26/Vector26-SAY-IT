@@ -1,6 +1,8 @@
 package com.vector.say_it;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -8,14 +10,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,10 +53,11 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     View v;
+    SwipeRefreshLayout swipeRefreshLayout;
     int id,follow_status;
     SharedPreferences sharedPreferences;
     RecyclerView recyclerView;
-    LinearLayout linearLayout;
+    LinearLayout linearLayout,getFollowers,getFollowed;;
     ProgressBar progressBar;
     public String url,uri,follow_req;
     public FragmentTransaction transaction;
@@ -60,7 +66,7 @@ public class ProfileFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     feedVeiw FeedView;
     String [] savePoints;
-    TextView userHeader,username,email,first_name,bio,posts_count,Followed_count,followers_count;
+    TextView profile_options,userHeader,username,email,first_name,bio,posts_count,Followed_count,followers_count;
     ImageView profile_pic;
     Button follow;
     public ProfileFragment() {
@@ -222,9 +228,31 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    public void delete(int post){
+        Log.i("post->",post+"");
+        String uri=getString(R.string.BASE_URL)+"CMS-API/Feed?id="+post;
+        RequestHandler req = new RequestHandler(false, uri, Request.Method.DELETE, null, getActivity(), sharedPreferences) {
+            @Override
+            public void callbackError(VolleyError e) {
+                Log.i("post->Error",post+"");
+                Log.i("post->Error",e.getMessage()+"");
+                super.callbackError(e);
+            }
+
+            @Override
+            public void callback(JSONObject response) {
+                Log.i("post->", post + "");
+                refresh();
+            }
+        };
+
+    }
+
     public void init(){
         data=new JSONArray();
         id=-1;
+        getFollowers=v.findViewById(R.id.getFollowers);
+        getFollowed=v.findViewById(R.id.getFollowed);
         progressBar=v.findViewById(R.id.progressBar);
         linearLayout=v.findViewById(R.id.waiter);
         progressBar.isIndeterminate();
@@ -234,18 +262,65 @@ public class ProfileFragment extends Fragment {
         data2=new JSONObject();
         recyclerView= v.findViewById(R.id.userPosts);
         layoutManager = new LinearLayoutManager(getActivity());
-        FeedView=new feedVeiw(data,getActivity(),sharedPreferences,"ProfilePosts");
+        FeedView=new feedVeiw(data,getActivity(),sharedPreferences,"ProfilePosts",this);
         recyclerView.setLayoutManager(this.layoutManager);
         recyclerView.setAdapter(FeedView);
         username=v.findViewById(R.id.username);
         email=v.findViewById(R.id.email);
         posts_count=v.findViewById(R.id.PostsVal);
         userHeader=getActivity().findViewById(R.id.GuestUserId);
+        profile_options=getActivity().findViewById(R.id.profile_options);
+        profile_options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getActivity(), v);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.profile_options);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.logout:
+                                //handle menu1 click
+                                sharedPreferences.edit().putString("Auth-Token","").apply();
+                                Intent i = new Intent(getActivity(), Auth.class);
+                                getActivity().startActivity(i);
+                                getActivity().finish();
+                                break;
+                            case R.id.edit_profile:
+
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+            }
+        });
         Followed_count=v.findViewById(R.id.FollowedVal);
         followers_count=v.findViewById(R.id.followersVal);
         first_name=v.findViewById(R.id.first_name);
         bio=v.findViewById(R.id.Poriflebio);
         profile_pic=v.findViewById(R.id.profile_pic);
+        swipeRefreshLayout = v.findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+
+                        // Your code goes here
+                        // In this code, we are just
+                        // changing the text in the textbox
+                        refresh();
+                        // This line is important as it explicitly
+                        // refreshes only once
+                        // If "true" it implicitly refreshes forever
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
         if(getActivity().getIntent().getStringExtra("id")!=null){
             id=Integer.parseInt(getActivity().getIntent().getStringExtra("id"));
             Log.i("id",id+"");
@@ -267,6 +342,26 @@ public class ProfileFragment extends Fragment {
             Log.i("Msg","n0t Exists and n0t id");
             refresh();}
         }
+        getFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), MainActivity4.class);
+//              Log.i("MyLogs",NotesList.size()+"");
+                i.putExtra("id", id+"");
+                i.putExtra("state", 0);
+                getActivity().startActivity(i);
+            }
+        });
+        getFollowed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), MainActivity4.class);
+//              Log.i("MyLogs",NotesList.size()+"");
+                i.putExtra("id", id+"");
+                i.putExtra("state", 1);
+                getActivity().startActivity(i);
+            }
+        });
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
