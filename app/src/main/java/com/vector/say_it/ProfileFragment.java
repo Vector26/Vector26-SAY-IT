@@ -269,6 +269,7 @@ public class ProfileFragment extends Fragment {
         email=v.findViewById(R.id.email);
         posts_count=v.findViewById(R.id.PostsVal);
         userHeader=getActivity().findViewById(R.id.GuestUserId);
+        try{
         profile_options=getActivity().findViewById(R.id.profile_options);
         profile_options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,7 +290,10 @@ public class ProfileFragment extends Fragment {
                                 getActivity().finish();
                                 break;
                             case R.id.edit_profile:
-
+                                i = new Intent(getActivity(), MainActivity4.class);
+                                i.putExtra("action",1);
+                                getActivity().startActivity(i);
+                                getActivity().finish();
                                 break;
                         }
                         return false;
@@ -299,6 +303,10 @@ public class ProfileFragment extends Fragment {
                 popup.show();
             }
         });
+        }
+        catch (Exception e){
+            e.getStackTrace();
+        }
         Followed_count=v.findViewById(R.id.FollowedVal);
         followers_count=v.findViewById(R.id.followersVal);
         first_name=v.findViewById(R.id.first_name);

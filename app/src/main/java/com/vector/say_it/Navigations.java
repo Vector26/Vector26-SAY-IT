@@ -92,32 +92,23 @@ public class Navigations extends AppCompatActivity {
                 return false;
             }
         };
-//        BottomNavigationView.OnNavigationItemReselectedListener navigationItemReselectedListener=new BottomNavigationView.OnNavigationItemReselectedListener() {
-//            @Override
-//            public void onNavigationItemReselected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.page_1:
-//                        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
-//                        home.refresh();
-//                        break;
-//                    case R.id.page_2:
-//                        getSupportActionBar().setCustomView(R.layout.search_action_bar);
-//                        search.refresh();
-//                        Log.i("Fragment","Search Cliked");
-//                        break;
-//                    case R.id.page_3:
-//                        getSupportActionBar().setCustomView(R.layout.profile_action_bar);
-//                        profileFragment.refresh();
-//                        Log.i("Fragment","profile cliked");
-//                        break;
-//                    case R.id.page_4:
-//                        Log.i("Fragment","create cliked");
-//                        break;
-//                }
-//            }
-//        };
+        BottomNavigationView.OnNavigationItemReselectedListener navigationItemReselectedListener=new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.page_1:
+                        break;
+                    case R.id.page_2:
+                        Log.i("Fragment","Search Cliked");
+                        break;
+                    case R.id.page_3:
+                        Log.i("Fragment","profile cliked");
+                        break;
+                }
+            }
+        };
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-//        bottomNavigationView.setOnNavigationItemReselectedListener(navigationItemReselectedListener);
+        bottomNavigationView.setOnNavigationItemReselectedListener(navigationItemReselectedListener);
         openFragment(home);
         arrayList.push(action_bars[0]);
     }

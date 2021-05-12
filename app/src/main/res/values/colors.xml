@@ -11,4 +11,6 @@
     <color name="recyclerBG">#DDDDDD</color>
     <color name="loading_screen">#DCDCDC</color>
     <color name="Alert">#DF0707</color>
+        <color name="colorPrimaryPix">#075e54</color>
+        <color name="colorPrimaryLightPix">#80075e54</color>
 </resources>

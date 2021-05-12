@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public class MainActivity4 extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class MainActivity4 extends AppCompatActivity {
         openFragment(fragobj);
         }
         else{
-
+            openFragment(new edit_profile());
         }
     }
     public void openFragment(Fragment fragment) {
@@ -36,6 +37,10 @@ public class MainActivity4 extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(getIntent().getIntExtra("action",0)==1){
+            Intent i = new Intent(this, Navigations.class);
+            startActivity(i);
+        }
         finish();
     }
 }
