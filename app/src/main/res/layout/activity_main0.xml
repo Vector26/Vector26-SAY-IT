@@ -26,8 +26,8 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigator"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="15"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:background="#FFFFFF"
             app:itemRippleColor="@color/black"
             app:itemTextColor="@color/black"
